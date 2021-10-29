@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  tbs-app-portal
+
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Parameters:
+  Environment:
+    Type: String
+    Description: eg dev, test, prod; this should be lower-case
+
+  WebDomainName:
+    Type: String
+    Default: docs.thebetterstore.net
+
+Conditions:
+  IsProd:  !Equals [ !Ref Environment, "prod" ]
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+          - "-"
+          - - !Sub "docs-${AWS::Region}-${AWS::AccountId}-tbs"
+            - !Ref Environment
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - Authorization
+              - Content-Length
+            AllowedMethods:
+              - GET
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3000
+      Tags:
+        - Key: Domain
+          Value: !Ref WebDomainName
+        - Key: "Name"
+          Value:
+            Fn::Join:
+              - "-"
+              - - !Sub "docs-${AWS::Region}-${AWS::AccountId}-tbs"
+                - !Ref Environment
+
+  PrivateBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    DependsOn: OriginAccessIdentity
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: CFGetBucketObjects
+            Effect: Allow
+            Principal:
+              CanonicalUser: !GetAtt
+                - OriginAccessIdentity
+                - S3CanonicalUserId
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+
+  OriginAccessIdentity:
+    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: CloudFrontOriginAccessIdentityConfig
+
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    DependsOn:
+      - S3Bucket
+      - OriginAccessIdentity
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref WebDomainName
+        Origins:
+          - DomainName: !GetAtt
+              - S3Bucket
+              - DomainName
+            Id: hostingS3Bucket
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - origin-access-identity/cloudfront/
+                  - !Ref OriginAccessIdentity
+        Enabled: 'true'
+        Comment: !Sub "${WebDomainName}"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref WebACMCertificate
+          MinimumProtocolVersion: "TLSv1.2_2019"
+          SslSupportMethod: sni-only
+
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          DefaultTTL: 86400
+          ForwardedValues:
+            QueryString: 'false'
+          MaxTTL: 31536000
+          MinTTL: 0
+          TargetOriginId: hostingS3Bucket
+          ViewerProtocolPolicy: redirect-to-https
+
+        DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 400
+            ResponseCode: 200
+            ResponsePagePath: /
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /
+        IPV6Enabled: false
+
+  RecordSetA:
+    Type: AWS::Route53::RecordSet
+    DependsOn: CloudFrontDistribution
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub "ROUTE53:${Environment}:HOSTEDZONES:PUBLIC:TBS"
+      Name: !Sub "${WebDomainName}"
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+
+  RecordSetAAAA:
+    Type: AWS::Route53::RecordSet
+    DependsOn: CloudFrontDistribution
+    Properties:
+      HostedZoneId:
+        Fn::ImportValue: !Sub "ROUTE53:${Environment}:HOSTEDZONES:PUBLIC:TBS"
+      Name: !Sub "${WebDomainName}"
+      Type: AAAA
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+
+  WebACMCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      CertificateTransparencyLoggingPreference: ENABLED
+      DomainName: !Sub "${WebDomainName}"
+      DomainValidationOptions:
+        - DomainName: !Sub "${WebDomainName}"
+          HostedZoneId:
+            Fn::ImportValue: !Sub "ROUTE53:${Environment}:HOSTEDZONES:PUBLIC:TBS"
+      ValidationMethod: DNS
+      Tags:
+        - Key: "Name"
+          Value: !Ref WebDomainName
+
+Outputs :
+  WebsiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
+  CloudFrontDistributionID:
+    Value: !Ref CloudFrontDistribution
+  CloudFrontDomainName:
+    Value: !GetAtt
+      - CloudFrontDistribution
+      - DomainName
+  CloudFrontSecureURL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - CloudFrontDistribution
+          - DomainName
