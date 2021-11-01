@@ -25,4 +25,16 @@ the following methodologies and technologies:
 * Selected Services
 * Implementation
 
+## The Goal
+A scalable and highly-available eCommerce platform deployed on AWS based on Cloud Native design. Such a system
+should be composed of loosely-coupled, highly-cohesive and independently-deployable microservices, that are able to 
+accommodate agile change management with minimal risk using 
+Infrastructure as Code and automated DevOps processes. Furthermore, such services should be fauly-tolerant and can scale 
+independently on demand.
 
+An initial hypothetical system is envisaged below:
+![initialview.svg](initialview.svg)
+
+
+The following sections look at using DDD techniques, Cloud-Native design and MSA practices to validate this at a high-level, 
+and hopefully evolve the model to make the eCommerce site 'The Better Store'.
