@@ -1,4 +1,5 @@
-@tag
+```
+@CustomerSignupFeature
 Feature: Customer Signup
 
   @tag1
@@ -17,3 +18,4 @@ Feature: Customer Signup
     Then I will be presented with a Vreification Successful confirmation
     And I will be redirected to the site's Sign In page
     And I will be able to sign-in
+```

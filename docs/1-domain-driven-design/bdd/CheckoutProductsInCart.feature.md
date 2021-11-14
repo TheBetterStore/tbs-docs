@@ -1,4 +1,5 @@
-@tag
+```
+@PurchaseProductsInCartFeature
 Feature: Purchase Products in Cart
 
 	@tag1
@@ -62,4 +63,4 @@ Feature: Purchase Products in Cart
     And Payment is rejected
     Then I will be directed back to my Cart screen with original items still listed
     And A Payment Unsuccessful message will be displayed
-            
+```

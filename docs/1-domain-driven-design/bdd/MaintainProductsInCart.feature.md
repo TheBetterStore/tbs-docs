@@ -1,4 +1,5 @@
-@tag
+@MaintainProductsInCartFeature
+```
 Feature: Maintain Products in Cart
 
   @tag1
@@ -33,5 +34,5 @@ Feature: Maintain Products in Cart
     And the Cart gross total for all selected products/quantities is updated with the new value minus the product
     And the Cart tax total is updated with the new value minus the product
     And the Cart net total is updated with the new value minus the product
-    
+```
         
