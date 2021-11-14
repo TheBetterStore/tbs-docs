@@ -20,43 +20,37 @@ const sidebars = {
     'intro',
     {
       type: 'category',
-      label: 'Contents',
+      label: 'Part 1: Domain Driven Design',
       items: [
-        {
-          type: 'category',
-          label: 'Part 1: Domain Driven Design',
-          items: [
-            'domain-driven-design/Overview',
-            'domain-driven-design/Strategic Patterns',
-            'domain-driven-design/Tactical Patterns']
-        },
-        {
-          type: 'category',
-          label: 'Part 2: Cloud Native Design',
-          items: [
-            'cloud-native-design/Overview',
-          ]
-        },
-        {
-          type: 'category',
-          label: 'Part 3: Implementation',
-          items: [
-            'implementation/Overview',
-          ]
-        },
-        {
-          type: 'category',
-          label: 'Part 4: Monitoring',
-          items: [
-            'monitoring/Overview',
-          ]
-        },
-        {
-          type: 'doc',
-          id: 'References',
-          label: 'References',
-        }
-      ],
+        'domain-driven-design/Overview',
+        'domain-driven-design/Strategic Patterns',
+        'domain-driven-design/Tactical Patterns']
+    },
+    {
+      type: 'category',
+      label: 'Part 2: Cloud Native Design',
+      items: [
+        'cloud-native-design/Overview',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Part 3: Implementation',
+      items: [
+        'implementation/Overview',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Part 4: Monitoring',
+      items: [
+        'monitoring/Overview',
+      ]
+    },
+    {
+      type: 'doc',
+      id: 'References',
+      label: 'References',
     }
   ]
   // But you can create a sidebar manually
