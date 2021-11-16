@@ -1,9 +1,9 @@
 ```
-@CustomerLoginFeature
+@UserLoginFeature
 Feature: Customer Login
 
-  @CustoemrLogin
-  Scenario: Customer Login
+  @UserLogin
+  Scenario: User Login
     Given I have an open web session to "The Better Store"
     And I am not already logged-in
     When I select Login from the home page
@@ -11,7 +11,7 @@ Feature: Customer Login
 
 
   @LoginSuccess
-  Scenario: Customer Login Success
+  Scenario: User Login Success
     Given I have an open web session to "The Better Store"
     And I have submitted credentials for a login request
     When my credentials have been successfully-authorised
@@ -20,7 +20,7 @@ Feature: Customer Login
     And my first name will be displayed in the page menu, with options of seeing my profile and order history
     
   @LoginFailed
-  Scenario: Customer Login Failure
+  Scenario: User Login Failure
     Given I have an open web session to "The Better Store"
     And I have submitted credentials for a login request
     When my credentials have not been successfully-authorised

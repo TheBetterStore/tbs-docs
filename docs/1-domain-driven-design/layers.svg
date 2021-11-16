@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 10 10" width="30%" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="5" cy="5" r="4" stroke-width="1.5" stroke="#ab5643" fill="#fff"/>
+  <circle cx="5" cy="5" r="2" stroke-width="1.3" stroke="#4897f7" fill="#fff"/>
+  <circle cx="5" cy="5" r="1" fill="#12b05e"/>
+  <text style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 0.3px;" x="4.097" y="1.212">Infrastructure</text>
+  <text style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 0.3px;" x="3.85" y="3.255">Service Interfaces</text>
+  <text style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 0.3px;" x="4.467" y="4.747" transform="matrix(1, 0, 0, 1, 0.044893, 0.112233)">Domain<tspan x="4.4670000076293945" dy="1em">​</tspan>Entities</text>
+</svg>

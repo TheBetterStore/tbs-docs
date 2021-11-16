@@ -15,11 +15,14 @@ Minimal Viable Product (MVP). _These could also be captured using BDD-based spec
 
    Examples for "The Better Store" generated as BDD specifications include:
    * [AddProductsToCart.feature](bdd/AddProductsToCart.feature.md)
+   * [AdministerErrors.feature](bdd/AdministerErrors.feature.md)
    * [CheckoutProductsInCart.feature](bdd/CheckoutProductsInCart.feature.md)
-   * [CustomerLogin.feature](bdd/CustomerLogin.feature.md)
-   * [CustomerSignup.feature](bdd/CustomerSignup.feature.md)
+   * [UserLogin.feature](bdd/UserLogin.feature.md)
+   * [UserSignup.feature](bdd/UserSignup.feature.md)
    * [FulfillOrder.feature](bdd/FulfillOrder.feature.md)
+   * [ManageOrder.feature](bdd/ManageOrder.feature.md)
    * [MaintainProductsInCart.feature](bdd/MaintainProductsInCart.feature.md)
+   * [ViewOrderReports.feature](bdd/ViewOrderReports.feature.md)
    * [ViewProductCatalogue.feature](bdd/ViewProductCatalogue.feature.md)
 
 2. Identify the main system actors; eg from entities noted in the Use Case/BDD specifications above, 
@@ -45,14 +48,38 @@ e.g.
 
 
 
-###### Core Domain
+###### Core Domains
+These cover the most important part of the business that provides its competitive advantage.
+Identification of the core domain(s) here helps provide clarity of the software that should receive
+the greatest development focus. Fot The Better Store these have been identified as:
 
+|SubDomain|Description|
+|:---|:---|
+|ProductCatalogue|Required for presenting available product information to online customers to choose|
+|Customer|Required for managing customer information such as shipping details|
+|Order|Critical component for managing product orders and payments|
+|Fulfillment|Important component for sending order to the warehouse for arranging delivery, and critical for delivering digital goods|
 
-###### Generic Domains
-
-
+###
 ###### Supporting Domains
+These provide supporting functions to the core domains If possible, COTS products should also be used if available.
 
+|SubDomain|Description|
+|:---|:---|
+|Inventory|Provides stock manangement to the business. While important, manual processes are possible if this is not immediately implemented|
+|Administration|Provides error management and support features to technical staff.|
+|Reporting|Provides reporting functionality to the business. Note these could be manually produced also, and are not critical/core to the business|
+
+###
+###### Generic Domains
+Generic subdomains provide common functionality that are not core to the business, and could also well-be 
+provided by COTS software. It makes sense to free-up developers to focus on the core areas.
+
+|SubDomain|Description|
+|:---|:---|
+|Login|It is envisaged that AWS Cognito may be configured to provide authentication and authorisation features of users |
+|Payment|Payment vendors such as Stripe will be used that also provide necessary security requirements such as PCI|
+|Loyalty|It is anticipated that Loyalty management software may be avaliable; otherise this feature is deemed lower priorityfor future development|
 
 
 ### Solution Space
@@ -61,7 +88,7 @@ A domain model
 
 ### Context Mapping
 
-#### First, introducing Integration Patterns
+#### First, introducing Integration Patterns; communications between Bounded Contexts
 ![DDDIntegrationPatterns.svg](DDDIntegrationPatterns.svg)
 
 ##### Symmetric Patterns
@@ -90,6 +117,6 @@ BC’s in D hence have knowledge of models in U BC’s (not the flow of informat
 
 _Note we want to avoid the 'Big Ball Of Mud'; this is the described anti-pattern which often results from unchecked growth of a monolith over time, where without practices code can become unstructured and very hard to extend and maintain._
 
-Fix 2. A context map for The Better Store
+Fig 2. A context map for The Better Store
 
-![TBSContextMapping_ContextMap.svg](TBSContextMapping_ContextMap.svg)
+![context-map.svg](context-map.svg)
