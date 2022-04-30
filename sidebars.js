@@ -37,7 +37,7 @@ const sidebars = {
       type: 'category',
       label: 'Part 3: Implementation',
       items: [
-        'implementation/Overview',
+        'implementation/Target View',
       ]
     },
     {
