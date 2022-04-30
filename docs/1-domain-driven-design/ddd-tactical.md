@@ -31,8 +31,6 @@ Its DDD strategic design described in the previous section has provided the foll
       2. 
 
 
-
-
-###Domain Layers
-
-![layers.svg](layers.svg)
+    
+### Domain Layers
+![Layers](layers.png)
