@@ -53,33 +53,33 @@ These cover the most important part of the business that provides its competitiv
 Identification of the core domain(s) here helps provide clarity of the software that should receive
 the greatest development focus. Fot The Better Store these have been identified as:
 
-|SubDomain|Description|
-|:---|:---|
-|ProductCatalogue|Required for presenting available product information to online customers to choose|
-|Customer|Required for managing customer information such as shipping details|
-|Order|Critical component for managing product orders and payments|
-|Fulfillment|Important component for sending order to the warehouse for arranging delivery, and critical for delivering digital goods|
+|SubDomain| Description                                                                                                             |
+|:---|:------------------------------------------------------------------------------------------------------------------------|
+|ProductCatalogue| Required for presenting available product information to online customers to choose                                     |
+|Customer| Required for managing customer information such as shipping details                                                     |
+|Order| Critical component for managing product orders and payments                                                             |
+|Fulfillment| Critical component for sending order to the warehouse for arranging delivery, and critical for delivering digital goods |
 
 ###
 ###### Supporting Domains
 These provide supporting functions to the core domains If possible, COTS products should also be used if available.
 
-|SubDomain|Description|
-|:---|:---|
-|Inventory|Provides stock manangement to the business. While important, manual processes are possible if this is not immediately implemented|
-|Administration|Provides error management and support features to technical staff.|
-|Reporting|Provides reporting functionality to the business. Note these could be manually produced also, and are not critical/core to the business|
+|SubDomain| Description                                                                                                                               |
+|:---|:------------------------------------------------------------------------------------------------------------------------------------------|
+|Inventory| Provides stock manangement to the business. While important, manual processes are possible if this is not immediately implemented         |
+|Administration| Provides error management and support features to technical staff                                                                         |
+|Reporting| Provides reporting functionality to the business. Note these could be manually produced also, hence are not critical/core to the business |
 
 ###
 ###### Generic Domains
 Generic subdomains provide common functionality that are not core to the business, and could also well-be 
 provided by COTS software. It makes sense to free-up developers to focus on the core areas.
 
-|SubDomain|Description|
-|:---|:---|
-|Login|It is envisaged that AWS Cognito may be configured to provide authentication and authorisation features of users |
-|Payment|Payment vendors such as Stripe will be used that also provide necessary security requirements such as PCI|
-|Loyalty|It is anticipated that Loyalty management software may be avaliable; otherise this feature is deemed lower priorityfor future development|
+|SubDomain| Description                                                                                                                                 |
+|:---|:--------------------------------------------------------------------------------------------------------------------------------------------|
+|Login| It is envisaged that AWS Cognito may be configured to provide authentication and authorisation features of users                            |
+|Payment| Payment vendors such as Stripe will be used that also provide necessary security requirements such as PCI                                   |
+|Loyalty| It is anticipated that loyalty management software may be avaliable; otherwise this feature is deemed lower priority for future development |
 
 
 ### Solution Space
