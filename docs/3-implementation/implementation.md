@@ -19,12 +19,16 @@ Coming soon... how the DDD implementation may be realized within an AWS Serverle
 * CQRS
 * Monitoring; application instrumentation with metrics and logging
 
+#####CQRS - Command Pattern
+
+![CQRS Command Pattern](cqrs-order-cmd.svg)
+
+
 ##### Application Infrastructure Patterns
 * MSA
 * Service Template & microservice chassis
 * Access Token
 * Communication stlyes (e.g. messaging (queue or pub/sub), RPC)
-* Ochestration vs Choregography
 * Healthchecks + resiliency (HA and recovery)
 * Circuit breakers
 
@@ -44,3 +48,5 @@ Also with reference to the AWS Well Architected Framework and its underlying pil
 ### Illustrating a perceived target architecture
 
 ![Implementation View](tbs-implementation.svg)
+
+

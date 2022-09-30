@@ -12,17 +12,20 @@ As described in the previous [Overview](ddd-overview.md), DDD Strategic Patterns
    subdomains that other teams are responsible for. This will be discussed further in the Integration Patterns section below.
    
    * Defining a Shared/Ubiquitous Language (UL) for each subdomain that is understood by both business and technical
-   stakeholders, which should then be used for  documentation and code artefacts (e.g. for the names of classes and their
+   stakeholders, which should then be used for documentation and code artefacts (e.g. for the names of classes and their
    methods and attributes).
    
 2. Whereas the Problem Space of a business is generally similar for different organisations that are involved in the same
- business; it is how they implement their solutions; i.e. their **Solution Space** that will generally differ [(6)](references.md). 
+ business; it is how they implement their solutions; i.e. their **Solution Space** that will generally differ [(6)](../references.md). 
  DDD prescribes the design of **Bounded Contexts** to demarcate and model solutions for identified subdomains, and
  "Context Mapping" with Integration Patterns to describe the relationships between them. Ideally we want minimal
  direct relationships/maximum decoupling between these.
- 
-Finally, it may be noted that each Bounded Context may be considered as a candidate for defining 1 or 
- more **Microservices**_ though this will be discussed further in the [Tactical Patterns](references.md) section.
+ Ideally we would like to define one bounded context per subdomain; however further decomposition is often favoured when ambiguity
+ in terminology exists, or to reduce risk and/or complexity when different areas of functionality are maintained by 
+ separate teams, require a different release cadence or have different risk factors for change.
+
+Finally, it may be noted that each Bounded Context may be considered as a candidate for defining one or 
+ more **Microservices**_; this will be discussed further in the [Tactical Patterns](../references.md) section.
 
 ## 1. Problem Space
 As an initial step in the design of The Better Store, we would expect our business domain expert and development team 
@@ -42,6 +45,7 @@ interactions between them.
 The application of these techniques will be illustrated at a very high-level below for an MVP definition of The Better Store.
 Further reading is recommended for those that wish to learn more of the techniques; the scope for each of these, in
 particular Event Storming and BDD is large!
+
 _Note: the methodologies chosen here have been selected as examples for The Better Store as a new application;
 other techniques would undoubtedly also come into play for other scenarios; for example exploring published
 models for similar applications, or referencing existing documentation for refactoring or enhancement of 
@@ -78,7 +82,7 @@ _Phase 4_. **Explicit Walkthrough**
 * Different narrators take the lead for describing the behaviour for different portions of the system, for 
 further review by other participants.
 
-_Phase 5_. **Identifying Aggregates**
+_Phase 5_. **Identifying Aggregates** 
 * We can use yellow notes to denote potential 'Aggregates'; that is, system entities that have their own identity id,
 sub-elements and transactional lifecycle. An example is Order, which will be required to have its own unique id for storage
 within a database, alongside its selected product items as attributes (which would also be persisted
@@ -88,13 +92,12 @@ _Phase 6_. **Problems and Opportunities**
 * Additional time for participants to add further questions (lilac notes), or **opportunities** (green notes).
 
 _Phase 7_. **Wrap up**
-* Ensure photos of the board are taken (and notes are kept if hard to ready from photos), for reference later.
-*
+* Ensure photos of the board are taken (and notes are kept if hard to ready from photos), to allow its referencing
+for analysis and modelling later.
 
-The following provides an example output from an Event Storming session held for The Better Store. 
+The following provides an example output from a remotely-run (using Miro) Event Storming session for The Better Store. 
 
 ![eventstorming-1](eventstorming-1.jpg)
-
 
 
 #### B. Defining Functional Behaviour With Behaviour Driven Development (BDD) Specifications
@@ -119,17 +122,19 @@ result in while also focusing on the domain language. The generation of these ca
 a subdomain's Ubiquitous Language ([2](../references.md)).
 
 #### C. Defining Functional Components With Class Responsibility Collaborator (CRC) cards
-This technique involves identifying the main system actors; eg from the Aggregates first deduced during 
-Event Storming, or  entities noted 
-in the BDD specifications above, and representing these visually for easy collaboration as 
-Class Responsibility Collaboration (CRC) cards.
-Each of these should capture the following:
+CRC Card modelling is an object-oriented technique that involves identifying the main system actors; 
+e.g. from the Aggregates first deduced during Event Storming or entities noted in the BDD specifications above, 
+and representing these visually for easy collaboration on separate cards.
+Each CRC card should capture the following:
      1. A class name, which represents a known concept within the domain and is easily-understood by business and technical 
      members (this will go into our Ubiquitous Language)
      2. Class responsibilities
-     3. Associated classes
+     3. Associated classes. A class often does not have sufficient information to fulfill its responsibilities, and must
+        _collaborate_ with other classes to complete their task. Such collaboration may be either: i. a request for 
+        information from another class, or ii. a command to perform an action.
 
-e.g.
+
+The following illustrates cards for our identified aggregates.
 
   ![crc-cards.svg](crc-cards.svg)
 
@@ -137,14 +142,15 @@ e.g.
 
 #### Distilling the problem space into subdomains
 The above exercises; in particular Event Storming and CRC cards assist us with demarcating functional requirements 
-into separate subdomains. As a final step in defining our problem space, we would like to further categorise these in
+into separate subdomains, identifying dependencies between them, and determination of a Ubiquitous Language for each. 
+As a final step in defining our problem space, we would like to further categorise these in
 order of importance to our business. The outcome of this exercise is to prioritise functionality for development focus,
 to ensure that tasks that provide the most competitive advantage receive the most attention.
 
 
-###### Core Domains
-These cover the most important part of the business that provides its competitive advantage.
-For The Better Store these have been identified as:
+###### Core Domain(s)
+These cover the most important part of the business that provides its competitive advantage. Rather than identifying only one, 
+for The Better Store we have identified multiple subdomains as core, being:
 
 |SubDomain| Description                                                                                                             |
 |:---|:------------------------------------------------------------------------------------------------------------------------|
@@ -180,15 +186,19 @@ The following diagram summarises the subdomains identified for our problem space
 ![problem-space-cat.svg](problem-space-cat.svg)
 
 ## 2.  Solution Space
-A Solution Space provides a model for realizing the needs of the requirements given in the Problem Space, fo example to
- define appropriate **Bounded Contexts**. 
-_Note each Bounded Context may be considered as a candidate for defining 1 or more **Microservices**_; we will however be
-talking more about granularity in the next section, [Tactical Patterns](ddd-tactical.md).
+A Solution Space provides a model for realizing the needs of the requirements given in the Problem Space, for example by
+ defining appropriate **Bounded Contexts** for each subdomain to implement. Each bounded context is also provided with its own Ubiquitous
+ Language; much of which should have been defined during analysis of the Problem Space for the belonging subdomains. In this way
+ each bounded context is kept _cohesive_ to a specific functional area.
 
-### Model Driven Design
-A domain model
+ The Solution Space also uses Context Mapping with Integration Patterns to define collaboration relationships between bounded contexts. 
+ Decoupled collaboration between bounded contexts is promoted, to reduce the requirement for development teams to have detailed 
+ knowledge of other teams' implementations. Context Mapping and its advantatges are described next.
 
-## 3. Context Mapping
+ Integration patterns are described next.
+
+
+### Context Mapping
 
 #### First, introducing Integration Patterns; communications between Bounded Contexts
 ![DDDIntegrationPatterns.svg](DDDIntegrationPatterns.svg)
@@ -222,3 +232,7 @@ _Note we want to avoid the 'Big Ball Of Mud'; this is the described anti-pattern
 Fig 2. A context map for The Better Store
 
 ![context-map.svg](context-map.svg)
+
+### Model Driven Design
+Completion of the Solution Space requires modelling for each of the bounded contexts; whereby Tactical Patterns come into play. We will
+be drilling into these further for the realization of cohesive and decoupled Microservices for The Better Store in the next section.
