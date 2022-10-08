@@ -23,8 +23,10 @@ Domain-driven design is aimed at promoting design quality via the following:
 eg (with credit to Millett):
 
 ![problem-space.svg](problem-space.svg)
+_Fig: Illustrating DDD Patterns for the Problem Space_
 
-
+![solution-space.svg](solution-space.svg)
+_Fig: Illustrating DDD Patterns for the corresponding Solution Space_
 
 Refer to [Strategic Patterns](ddd-strategic.md) for examples used with The Better Store
 

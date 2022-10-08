@@ -8,21 +8,19 @@ As described in the previous [Overview](ddd-overview.md), DDD Strategic Patterns
   its important features by:
    * Using 'Knowledge Crunching' methods to extract relevant information and help identify and decompose 
    the problem space into separate manageable business subdomains, with the idea that these can be more-easily 
-   understood and maintained if owned by separate teams. The idea is that each team should require minimal knowledge of other
+   understood and maintained if owned by separate teams. The intent is that each team should require minimal knowledge of other
    subdomains that other teams are responsible for. This will be discussed further in the Integration Patterns section below.
    
    * Defining a Shared/Ubiquitous Language (UL) for each subdomain that is understood by both business and technical
-   stakeholders, which should then be used for documentation and code artefacts (e.g. for the names of classes and their
+   stakeholders, which should subsequently be used for documentation and code artefacts (e.g. for the names of classes and their
    methods and attributes).
    
 2. Whereas the Problem Space of a business is generally similar for different organisations that are involved in the same
- business; it is how they implement their solutions; i.e. their **Solution Space** that will generally differ [(6)](../references.md). 
+ business, it is how they implement their solutions; i.e. their **Solution Space** that will generally differ [(6)](../references.md). 
  DDD prescribes the design of **Bounded Contexts** to demarcate and model solutions for identified subdomains, and
- "Context Mapping" with Integration Patterns to describe the relationships between them. Ideally we want minimal
- direct relationships/maximum decoupling between these.
- Ideally we would like to define one bounded context per subdomain; however further decomposition is often favoured when ambiguity
- in terminology exists, or to reduce risk and/or complexity when different areas of functionality are maintained by 
- separate teams, require a different release cadence or have different risk factors for change.
+ "Context Mapping" with Integration Patterns to describe the relationships between them. As will be described 
+ later below, the choice of integration patterns to use will influence the degree of coupling between these, noting that we wish
+ to maximise loose coupling for an agile and scalable microservice architecture.
 
 Finally, it may be noted that each Bounded Context may be considered as a candidate for defining one or 
  more **Microservices**_; this will be discussed further in the [Tactical Patterns](../references.md) section.
@@ -30,12 +28,12 @@ Finally, it may be noted that each Bounded Context may be considered as a candid
 ## 1. Problem Space
 As an initial step in the design of The Better Store, we would expect our business domain expert and development team 
 to collaborate within 'Knowledge Crunching' sessions; using popular techniques such as 'Event Storming' for fast 
-sharing and discussing ideas for desired functional behaviour. Event Storming has been touted as having much success 
+sharing and discussion od ideas for desired functional behaviour. Event Storming has been touted as having much success 
 more recently for sharing ideas of system behaviour and scope between both technical and non-technical people [(4)](references.md).
 
 The output of Event Storming workshops are highly-visual diagrams conveying envisaged business contexts and behaviours.
 From here, main use cases may be chosen that would become part of the 'Core Domain' for implementation of a Minimal
-Viable Product (MVP). More explicit specifications for these can then be made more explicit using tools such as:
+Viable Product (MVP). More explicit specifications for these can then be defined using tools such as:
 
 1. Behaviour-Driven Development (BDD) specifications to focus on the behaviour of the main use cases oriented around specific
 scenarios.
@@ -46,8 +44,8 @@ The application of these techniques will be illustrated at a very high-level bel
 Further reading is recommended for those that wish to learn more of the techniques; the scope for each of these, in
 particular Event Storming and BDD is large!
 
-_Note: the methodologies chosen here have been selected as examples for The Better Store as a new application;
-other techniques would undoubtedly also come into play for other scenarios; for example exploring published
+_Note: the methodologies chosen here have been selected as examples for The Better Store as a new application.
+Other techniques would undoubtedly also come into play for other scenarios; for example exploring published
 models for similar applications, or referencing existing documentation for refactoring or enhancement of 
 a current application.
 _ 
@@ -58,11 +56,12 @@ analysis of a business process involves bringing together the development team a
 applicable "knowledge silos" within the business as participants in collaboration workshops. Within the workshops,
 participants are requested by the workshop mediator to use different colour-coded sticky notes to model a flow of 
 domain events, commands and external systems over time (from left to right); i.e. _temporal modelling_ on a clear wall space.
-_Note online collaboration tools such as Miro are also available to support teams where participants are in remote locations._
+Online collaboration tools such as [Miro](https://miro.com) are also available to support teams where participants 
+are in remote locations.
 
-This activity is often performed in a number of phases as defined by the mediator as appropriate for the system and/or goal;
-for example for a high-level design of The Better Store we could derive these from Brandolini's 'Big Picture Workshop' 
-model to have:
+Event storming is often performed in a number of phases as defined and controlled by the mediator as appropriate for the system 
+and/or goal; for example for a high-level design of The Better Store we will derive these from Brandolini's 'Big Picture Workshop' 
+configuration to have:
 
 _Phase 1_. **Chaotic Exploration**
 * All participants add Orange notes to represent expected domain events (verbs in the past tense), and lilac notes to represent questions or
@@ -142,7 +141,7 @@ The following illustrates cards for our identified aggregates.
 
 #### Distilling the problem space into subdomains
 The above exercises; in particular Event Storming and CRC cards assist us with demarcating functional requirements 
-into separate subdomains, identifying dependencies between them, and determination of a Ubiquitous Language for each. 
+into separate subdomains, identifying dependencies between them, and an initial Ubiquitous Language for each. 
 As a final step in defining our problem space, we would like to further categorise these in
 order of importance to our business. The outcome of this exercise is to prioritise functionality for development focus,
 to ensure that tasks that provide the most competitive advantage receive the most attention.
@@ -155,9 +154,7 @@ for The Better Store we have identified multiple subdomains as core, being:
 |SubDomain| Description                                                                                                             |
 |:---|:------------------------------------------------------------------------------------------------------------------------|
 |ProductCatalogue| Required for presenting available product information to online customers to choose                                     |
-|Customer| Required for managing customer information such as shipping details                                                     |
 |Order| Critical component for managing product orders and payments                                                             |
-|Fulfillment| Critical component for sending order to the warehouse for arranging delivery, and critical for delivering digital goods |
 
 ###
 ###### Supporting Domains
@@ -165,6 +162,8 @@ These provide supporting functions to the core domains If possible, Commercial O
 
 |SubDomain| Description                                                                                                                               |
 |:---|:------------------------------------------------------------------------------------------------------------------------------------------|
+|Fulfillment| Critical component for sending order to the warehouse for arranging delivery, and critical for delivering digital goods |
+|Customer| Required for managing customer information such as shipping details                                                     |
 |Inventory| Provides stock manangement to the business. While important, manual processes are possible if this is not immediately implemented         |
 |Administration| Provides error management and support features to technical staff                                                                         |
 |Reporting| Provides reporting functionality to the business. Note these could be manually produced also, hence are not critical/core to the business |
@@ -181,21 +180,19 @@ provided by COTS software (again freeing-up developers to focus on the core area
 |Loyalty| It is anticipated that loyalty management software may be avaliable; otherwise this feature is deemed lower priority for future development |
 
 
-The following diagram summarises the subdomains identified for our problem space.
+The following diagram summarises the subdomains identified for our problem space, and their dependencies.
 
 ![problem-space-cat.svg](problem-space-cat.svg)
 
 ## 2.  Solution Space
 A Solution Space provides a model for realizing the needs of the requirements given in the Problem Space, for example by
- defining appropriate **Bounded Contexts** for each subdomain to implement. Each bounded context is also provided with its own Ubiquitous
+ defining appropriate **Bounded Contexts** (BC's) for each subdomain to implement. Each bounded context is also provided with its own Ubiquitous
  Language; much of which should have been defined during analysis of the Problem Space for the belonging subdomains. In this way
  each bounded context is kept _cohesive_ to a specific functional area.
 
- The Solution Space also uses Context Mapping with Integration Patterns to define collaboration relationships between bounded contexts. 
+ The Solution Space also uses Context Mapping with Integration Patterns to define collaboration relationships between the bounded contexts. 
  Decoupled collaboration between bounded contexts is promoted, to reduce the requirement for development teams to have detailed 
- knowledge of other teams' implementations. Context Mapping and its advantatges are described next.
-
- Integration patterns are described next.
+ knowledge of other teams' implementations. 
 
 
 ### Context Mapping
@@ -233,6 +230,6 @@ Fig 2. A context map for The Better Store
 
 ![context-map.svg](context-map.svg)
 
-### Model Driven Design
+### Next Steps: Creating a Model Driven Design
 Completion of the Solution Space requires modelling for each of the bounded contexts; whereby Tactical Patterns come into play. We will
 be drilling into these further for the realization of cohesive and decoupled Microservices for The Better Store in the next section.
