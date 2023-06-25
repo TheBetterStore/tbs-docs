@@ -15,21 +15,18 @@ As described in the previous [Overview](ddd-overview.md), DDD Strategic Patterns
    stakeholders, which should subsequently be used for documentation and code artefacts (e.g. for the names of classes and their
    methods and attributes).
    
-2. Whereas the Problem Space of a business is generally similar for different organisations that are involved in the same
- business, it is how they implement their solutions; i.e. their **Solution Space** that will generally differ [(6)](../references.md). 
- DDD prescribes the design of **Bounded Contexts** to demarcate and model solutions for identified subdomains, and
- "Context Mapping" with Integration Patterns to describe the relationships between them. As will be described 
- later below, the choice of integration patterns to use will influence the degree of coupling between these, noting that we wish
- to maximise loose coupling for an agile and scalable microservice architecture.
+2. Produce a **Solution Space**  comprising Bounded Contexts to demarcate and model solutions for identified subdomains. 
+This should include a Context Map that defines relationships between the bounded contexts.
 
 Finally, it may be noted that each Bounded Context may be considered as a candidate for defining one or 
  more **Microservices**_; this will be discussed further in the [Tactical Patterns](../references.md) section.
 
 ## 1. Problem Space
-As an initial step in the design of The Better Store, we would expect our business domain expert and development team 
-to collaborate within 'Knowledge Crunching' sessions; using popular techniques such as 'Event Storming' for fast 
-sharing and discussion od ideas for desired functional behaviour. Event Storming has been touted as having much success 
-more recently for sharing ideas of system behaviour and scope between both technical and non-technical people [(4)](references.md).
+As an initial step in the design of The Better Store, we would expect one or more appointed business domain experts to 
+collaborate with the development team in 'Knowledge Crunching' sessions, using popular techniques such as 'Event Storming' 
+for fast sharing and discussion of ideas for desired functional behaviour. Event Storming has been touted as having much 
+success more recently for sharing ideas of system behaviour and scope between both technical and 
+non-technical people [(4)](references.md).
 
 The output of Event Storming workshops are highly-visual diagrams conveying envisaged business contexts and behaviours.
 From here, main use cases may be chosen that would become part of the 'Core Domain' for implementation of a Minimal
@@ -46,8 +43,8 @@ particular Event Storming and BDD is large!
 
 _Note: the methodologies chosen here have been selected as examples for The Better Store as a new application.
 Other techniques would undoubtedly also come into play for other scenarios; for example exploring published
-models for similar applications, or referencing existing documentation for refactoring or enhancement of 
-a current application.
+models for similar applications, or referencing existing documentation for a current application that is to be enhanced
+or refactored.
 _ 
 
 #### A. Identifying System Behaviour Using Event Storming
@@ -64,37 +61,38 @@ and/or goal; for example for a high-level design of The Better Store we will der
 configuration to have:
 
 _Phase 1_. **Chaotic Exploration**
-* All participants add Orange notes to represent expected domain events (verbs in the past tense), and lilac notes to represent questions or
-questions or unknowns (specific discussions should be kept short at this time; our focus here is coverage).
+* All participants add _orange notes_ to represent expected domain events (verbs in the past tense), and _lilac notes_ 
+to represent questions or unknowns (specific discussions should be kept short at this time; our focus here is coverage).
 
 _Phase 2_. **Timeline Enforcement**
-* Rearrange events to restrict them to a single timeline. This should result in further discussions and 
+* Events are rearranged to restrict them to a single timeline. This should result in further discussions and 
 help identify gaps or unknowns.
 
 _Phase 3_. **Commands, People and Systems**
-* Blue notes are added to represent commands (imperatives), which may be called by external users or systems to generate
+* _Blue notes_ are added to represent commands, which may be called by external users or systems to generate
 the events.
-* Pink notes are then added to represent external systems that may be used.
-* Finally, yellow notes with a User icon are added to represent people that interact with the system.
+* _Pink notes_ are then added to represent external systems that may be used.
+* Finally, _yellow notes_ with a User icon are added to represent people that interact with the system.
 
 _Phase 4_. **Explicit Walkthrough**
 * Different narrators take the lead for describing the behaviour for different portions of the system, for 
 further review by other participants.
 
 _Phase 5_. **Identifying Aggregates** 
-* We can use yellow notes to denote potential 'Aggregates'; that is, system entities that have their own identity id,
-sub-elements and transactional lifecycle. An example is Order, which will be required to have its own unique id for storage
+* We can use _yellow notes_ to denote potential 'Aggregates'; that is, system entities that have their own identity id,
+sub-elements and transactional lifecycle(we will be discussing these more in the next Tactical Patterns section). 
+An example is Order, which will be required to have its own unique id for storage
 within a database, alongside its selected product items as attributes (which would also be persisted
 when an order is created or updated in a data store).
 
 _Phase 6_. **Problems and Opportunities**
-* Additional time for participants to add further questions (lilac notes), or **opportunities** (green notes).
+* Additional time for participants to add further questions (lilac notes), or **opportunities** (_green notes_).
 
 _Phase 7_. **Wrap up**
 * Ensure photos of the board are taken (and notes are kept if hard to ready from photos), to allow its referencing
 for analysis and modelling later.
 
-The following provides an example output from a remotely-run (using Miro) Event Storming session for The Better Store. 
+The following provides an example output from a remotely-run (_using Miro_) Event Storming session for The Better Store. 
 
 ![eventstorming-1](eventstorming-1.jpg)
 
@@ -126,8 +124,8 @@ e.g. from the Aggregates first deduced during Event Storming or entities noted i
 and representing these visually for easy collaboration on separate cards.
 Each CRC card should capture the following:
      1. A class name, which represents a known concept within the domain and is easily-understood by business and technical 
-     members (this will go into our Ubiquitous Language)
-     2. Class responsibilities
+     members (this will go into our Ubiquitous Language).
+     2. Class responsibilities.
      3. Associated classes. A class often does not have sufficient information to fulfill its responsibilities, and must
         _collaborate_ with other classes to complete their task. Such collaboration may be either: i. a request for 
         information from another class, or ii. a command to perform an action.
@@ -148,8 +146,9 @@ to ensure that tasks that provide the most competitive advantage receive the mos
 
 
 ###### Core Domain(s)
-These cover the most important part of the business that provides its competitive advantage. Rather than identifying only one, 
-for The Better Store we have identified multiple subdomains as core, being:
+These cover the most important part of the business that provides its competitive advantage.
+Identification of the core domain(s) here helps provide clarity of the software that should receive the greatest development focus. 
+For The Better Store these have been identified as:
 
 |SubDomain| Description                                                                                                             |
 |:---|:------------------------------------------------------------------------------------------------------------------------|
@@ -185,38 +184,39 @@ The following diagram summarises the subdomains identified for our problem space
 ![problem-space-cat.svg](problem-space-cat.svg)
 
 ## 2.  Solution Space
-A Solution Space provides a model for realizing the needs of the requirements given in the Problem Space, for example by
- defining appropriate **Bounded Contexts** (BC's) for each subdomain to implement. Each bounded context is also provided with its own Ubiquitous
- Language; much of which should have been defined during analysis of the Problem Space for the belonging subdomains. In this way
- each bounded context is kept _cohesive_ to a specific functional area.
+The Solution Space provides a model for realizing the needs of the requirements given in the Problem Space, for example by
+ defining appropriate **Bounded Contexts** (BC's) for each subdomain to implement. Each bounded context is also provided 
+ with its own Ubiquitous Language; much of which should have been defined during analysis of the Problem Space for the 
+ belonging subdomains. In this way  each bounded context is kept _cohesive_ to a specific functional area.
 
- The Solution Space also uses Context Mapping with Integration Patterns to define collaboration relationships between the bounded contexts. 
- Decoupled collaboration between bounded contexts is promoted, to reduce the requirement for development teams to have detailed 
- knowledge of other teams' implementations. 
+Following the modelling of Bounded Contexts, the solution space also defines Context Mapping, using Integration Patterns 
+to define the collaboration relationships between these. This is an important output which will highlight the degree of 
+decoupling between services, and the shared knowledge required by the teams that own them.
 
+DDD's Integration Patterns are described below [1, 10]:
 
-### Context Mapping
-
-#### First, introducing Integration Patterns; communications between Bounded Contexts
 ![DDDIntegrationPatterns.svg](DDDIntegrationPatterns.svg)
 
+where the patterns may be categorised and described below. Context Mapping annotations are also provided below; their usage is illustrated in a sample context mapping diagram for The Better Store that follows.
+
 ##### Symmetric Patterns
+where 2 BC's have related interdependencies.
 
 * Separate Ways; bounded contexts are independent with no relationships between them. Teams can work at their own pace.
 
-* Partnership Pattern ;2 Bounded Contexts are mutually dependent on each-other; ie are tightly-coupled. Teams need to know the business models and UL of the other team. Changes need to be coordinated. An anti-pattern of MSA to move from.
+* Partnership;2 Bounded Contexts are mutually dependent on each-other; ie are tightly-coupled. Teams need to know the business models and UL of the other team. Changes need to be coordinated. An anti-pattern of MSA to move from.
 
 * Shared Kernel; Move to demarcate shared models used between BC’s. eg as separate libraries and UL. This should be kept to a minimal amount of contexts
 
 ##### Asymmetric Patterns
 Where 1 bounded context is dependent on another .The dependent is termed Downstream (D), the provider/host is terms Upstream (U). 
-BC’s in D hence have knowledge of models in U BC’s (not the flow of information.
+BC’s in D hence have knowledge of models in U BC’s.
 
-* Customer-Supplier Pattern; Upstream BC exposes models specifically for the needs of downstream BC; eg as a client/host relationship
+* Customer-Supplier; Upstream BC exposes models specifically for the needs of downstream BC; eg as a client/host relationship
 
-* Conformist Pattern; Upstream BC exposes models with no regards to any downstream BC. The downstream BC conforms to the upstream BC models.
+* Conformist; Upstream BC exposes models with no regards to any downstream BC. The downstream BC conforms to the upstream BC models.
 
-* Anti Corruption Layer Pattern; D is NOT conformist; an isolated transformation layer is used to protect the downstream BC from corruption; i.e. from using another domain’s model. The ACL only has the knowledge of models from U and D to perform necessary mappings from U’s model to downstream.
+* Anti Corruption Layer; D is NOT conformist; an isolated transformation layer is used to protect the downstream BC from corruption; i.e. from using another domain’s model. The ACL only has the knowledge of models from U and D to perform necessary mappings from U’s model to downstream.
 
 ##### One-to-many Patterns
 
