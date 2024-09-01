@@ -21,16 +21,6 @@ The main patterns and their relationships are illustrated as:
 | Factories                         | Assist with the creation of new aggregates, where a constructor may not always be enough to deal with required complexity.                                                                                                                                                                                                                                                                                                         
 | Domain & Application **Services** | Services are used to provide business functionailty that spans 2 or more entities; ie to provide behaviour that 1 entity cannot provide alone.                                                                                                                                                                                                                                                                                     |
 
-In addition to these main patterns we also describe
-
-| Pattern                          |Description|
-|:---------------------------------|:---|
-| Domain Events                    |These can be used to notify other system components when something happens; e.g. an order is cancelled; which should also be communicated across payment, fulfillment, and  loyalty domains.|
-| Domain Model                     |As defined by Martin Fowler's 'Patterns of Enterprise Application Architecture', this is represented by an object-oriented model rather than being data-driven, as described further below in Domain Layers.|
-| Anemic and Rich Models           |Anemic domain models are defined as an 'Anti-Pattern' by Fowler, whereby objects ar edefined with attributes but very little behaviour; ie to more resemble Data Transfer Objects (DTO's). The anaemic model rather promotes the addition of business into Services. The result is that rather than following Object Oriented Design principals, business logic and data transforamtions becomes procedural. Rich models in contrast promote the use of services for providing only logic that spans mutliple entities.|
-
-Each of these are described in relation to The Better Store next.
-
 
 ### Example: Order Bounded Context
 The Order bounded context was first introduced in [Strategic Patterns](ddd-strategic.md), as representing a 
@@ -51,7 +41,7 @@ B. Class Responsibility Collaboration
 
 ![CrcOrders](crc-cards-order.svg)
 
-A draft class diagram has been constructed below to realize a design for the provided features using the tactical patterns:
+Combining these strategic design outputs with the described tactical patterns, an initial draft high-level class diagram may be constructed as below:
 
 ![OrdersContext](tactical-order.svg)
 
@@ -63,47 +53,44 @@ For this we will be using the Onion Architecture, as described next.
 
     
 ### Application Architecture with Layering; introducing Onion Architecture!
-A layered application architecture is a popular technique used by software developers and application architects 
-to structure application source code into separate locations; e.g. subdirectories or other code repositories, 
-based on their function; for example presentation, business/domain logic and data access. Such layers of 
-separation have traditionally been called 'tiers' in application architecture; and applications constructed from
-the aforementioned layers may be termed '3-tier' or 'n-tier' applications. Each of the tiers will often change at 
-different rates; separating source-code into the different layers of abstraction (or _Separation of Concerns_) is 
-aimed at reducing complexity of the application by encapsulating similar functionality in the same place, while allowing 
-for example user interface changes to be applied with low risk of impact to business or data access logic, and vice-versa.
-Theoretically, if planned carefully such an architecture  may even render it possible for an application's entire user interface, or underlying 
-database product to be replaced within an application, with little or no change being required to its business logic. In 
-practice imperfections however can lead to at least minimal changes typically being needed for such a task. However, keeping
-consideration for such substitution activities by methods of cohesive and loosely-coupled classes and components is vital
-for enhanced extensibility and testability of code. We will be talking more about this with use of coding-to-interfaces and 
-dependency injection next.
+A layered application architecture is a standard technique used by software developers and application architects to 
+structure application source code into abstract layers (or tiers); for example by splitting code into separate 
+subdirectories, modules and/or namespaces within the application’s code repository based on their general concerns; 
+such as presentation, business domain logic, and data access. An example of this topology is illustrated below:
 
+![Layers](layeredarchitecture.png)
 
+This also promotes a top-down dependency model, whereby higher layers can only communicate with the layer above them; for example logic within the presentation layer cannot directly obtain data from the database via the data access layer; such queries must be via calls to the business layer.
 
+Advantages of a layered architecture for realizing Separation of Concerns include:
 
+* Code complexity is reduced as is it organised within its area of concern. This allows application logic to be easier found and changed, with reduced risk of impacting other areas of the application. For example, making changes to the user interface may be performed with little or no change or regression testing being required for other application layers
+* Such an architecture may even render it possible for an application’s entire user interface, or underlying database product to be replaced within an application, with little or no change being required to its business logic.
 
-The Onion Architecture was first defined by Jeffrey Palermo (3), which is aimed at defining a layered dependency model whereby outer layers are dependent-upon but loosely-coupled to components within inner layers; with the adoption of Inversion of Control to provide loose or inter-changeable coupling. Inner-components should never be dependent on outer layers.
-The inner components are comprised of domain entities and services as defined by our DDD tactical patterns to provide core business functionality. Application services are often implemented to provide an additional decoupled layer above domain services, for example to :
-Serve as a proxy to requests to domain services, but with inclusion of additional functionality such as authentication/authorisation, or request/response object transformation, to satisfy system requirements .
-Orchestrating calls to underlying domain services to meet specific use cases.
+However, while the decomposition of an application into layers helps reduce its complexity, it operates at a high-level and does not necessarily include best practices for structuring code within the layers, or to align with artefact types modeled using Domain Driven Design. Each layer within a larger application can quickly become unwieldly and at risk of the ‘Big Ball of Mud’ as an application becomes larger if left unchecked without adoption of further decomposition and decoupling best practices and standards, such as Inversion of Control and SOLID by the development team. The Onion Architecture helps with the realization of these.
+
+The **Onion Architecture** was first defined by Jeffrey Palermo [3] as a layered application dependency model, whereby outer layer components may be dependent on any of its lower-layer components, as illustrated in figure 6 below:
+
 
 ![Layers](ddd-onion-layers.svg)
 
+The architecture however exhibits the following differences to the n-tier layered architecture described as described earlier:
 
-
-| Layer           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|:----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Application     | Application services are used to expose domain logic to the presentation layer via Data Transfer Objects (dto's), which may be also be known as View Models (VM's). In this way they also serve to isolate and protect the integrity of the domain model. Application services typically use both domain services and repositories to deal with external requests.                                                                                                                                                     |
-| Infrastructure  | Infrastructure services provide technical capabilities to an application outside of the business logic; such as adapters and repositories for integrating with external systems and data stores, logging, messaging and authentication/authorisation.
-| Domain Services | Domain services are used to perform domain operations and business rules that span across multiple entities ;i.e. those that o not naturally fit within a single domain entity. Unlike application services, domain services return domain objects.                                                                                                                                                                                                                                                                     
-| Domain Model    | Represents aggregrates, entities and value objects which provide state and behaviour to model business logic for the system
-| Application Core| The Application Core defines core interfaces that are requried across multiple layers to support dependency injection. 
-
-Using the above constructs, our Order microservice application architecure may be further refiend as the following:
+1. It promotes Inversion of Control (IoC) to provide loose or interchangeable coupling of components. In this respect, each layer/circle within its model encapsulates internal implementation details and exposes an interface for outer layers to consume.
+2. The inner components are comprised of domain entities and services as defined by our DDD tactical patterns to provide core business functionality. Also included are abstract interfaces, for example data access methods, as illustrated in the Application Core in figure 7. Their concrete methods however are implemented at the outermost infrastructure layer, using IoC. This is because the technology implemented for a database, or other external dependency such as HTTP Rest endpoints or technology-specific adapter should be agnostic to business domain components, and be able to be substituted with another product if needed. They may also be substituted with a mock component for automated testing purposes.
+3. Application services are often implemented to provide an additional decoupled layer above domain services, for example to:
+- Serve as a proxy to requests to domain services, but with inclusion of additional functionality such as authentication/authorisation, or request/response object transformation, to satisfy system requirements. - Orchestrate calls to underlying domain services to meet specific use cases.
+  The Infrastructure layer typically includes:
+- API servers such as REST API gateways, which manage and propagate externally-received requests to underlying application and domain service components.
+- Presentation components, such as a web user interface, which may be dependent on calls to application and domain services (as well as API’s as described above).
+- Repository components for accessing data stores; e.g. relational or NoSQL databases.
+- Adapters for accessing external dependencies; for example a REST HTTP client or AWS SQS client, both with bespoke security, logging and error handling requirements included.
+- Automated unit or integration tests. These can include dependency injection configurations which mock external dependencies, to provide fast and consistent test results within an isolated environment.
+  Details of IoC are out-of-scope of this article; further information of this and related SOLID principles which relate well to the technical implementation of The Better Store is well-described in R. Jansen’s web article: Implementing SOLID and the onion architecture in Node.js with TypeScript and InversifyJS [10]. The following class diagrams and sample code however provide an example of how InversifyJS may be used within our NodeJS+Typescript OrderService implementation to define interface bindings to concrete RestApi client class for our main application, and the same interface bindings to a mock Payment API client class for a corresponding automated test application.
 
 ![Layers](tactical-order-layers.svg)
 
-An AWS Serverless implementation of the architecture using Node.js with Typescript and Invesify for Dependency Injection will be described in the future Part Six article, however the following screenshot provides a taster of what we expect to come, in terms of its code scaffolding.
+A complete AWS Serverless implementation of the architecture using Node.js with Typescript and Invesify for Dependency Injection will be described in the future Part Six article, however the following screenshot provides a taster of what we expect to come, in terms of its code scaffolding. Its code is available to view at: https://github.com/TheBetterStore/tbs-app-order.
 
 ![NodeJS Application Scaffolding](AppScaffolding.png)
 
