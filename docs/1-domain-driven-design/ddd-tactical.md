@@ -10,7 +10,7 @@ _NB: Content here is currently Work-in-Progress_
 DDD tactical patterns, also known as 'model building blocks', are used to help define static models for complex bounded contexts.
 The main patterns and their relationships are illustrated as:
 
-![Tactival Patterns](tactical-pattern-mapping.svg)
+![Tactical Patterns](tactical-pattern-mapping.svg)
 
 | Pattern                           | Description                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |:----------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
