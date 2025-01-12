@@ -1,6 +1,6 @@
 ---
 id: Target View
-sidebar_position: 0
+sidebar_position: 1
 sidebar_label: Target View
 ---
 
