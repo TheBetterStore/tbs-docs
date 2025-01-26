@@ -28,23 +28,38 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Part 2: Cloud Native Design',
+      label: 'Part 2: Cloud Native Design & Implementation',
       items: [
-        'cloud-native-design/Overview',
+        'cloud-native-design+implementation/Overview',
+        'cloud-native-design+implementation/Target View'
       ]
     },
     {
       type: 'category',
-      label: 'Part 3: Implementation',
+      label: 'Part 3: DevSecOps',
       items: [
-        'implementation/Target View',
+        'devsecops/Overview',
       ]
     },
     {
       type: 'category',
-      label: 'Part 4: Monitoring',
+      label: 'Part 4: FrontEnd',
+      items: [
+        'frontend/Overview',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Part 5: Monitoring',
       items: [
         'monitoring/Overview',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Part 6: Other Projects',
+      items: [
+        'other-projects/Overview',
       ]
     },
     {
