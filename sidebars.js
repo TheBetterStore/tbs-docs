@@ -31,6 +31,7 @@ const sidebars = {
       label: 'Part 2: Cloud Native Design & Implementation',
       items: [
         'cloud-native-design+implementation/Overview',
+        'cloud-native-design+implementation/MSA Architecture Patterns',
         'cloud-native-design+implementation/Target View'
       ]
     },
