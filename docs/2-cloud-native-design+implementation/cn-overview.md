@@ -50,4 +50,4 @@ For answering these questions, we will consider the following:
 2. Candidate AWS ServicesError Handling
 3. Error Handling
 
-Next: [Microservice Architecture Patterns:]((msa-architecture-patterns.md))
+Next: [Microservice Architecture Patterns:](msa-architecture-patterns.md)

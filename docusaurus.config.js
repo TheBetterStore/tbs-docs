@@ -1,39 +1,70 @@
 // @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+// `@type` JSDoc annotations allow editor autocompletion and type checking
+// (when paired with `@ts-check`).
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+import {themes as prismThemes} from 'prism-react-renderer';
+
+// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '"The Better Store"',
+  title: 'The Better Store',
   tagline: 'A collaborative open-source project for creating and demonstrating a flexible, scalable and highly-available eCommerce platform in The Cloud',
-  url: 'https://portal.thebettersore.net',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
+
+  // Set the production url of your site here
+  url: 'https://portal.thebettersore.net',
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/',
+
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
   organizationName: 'TheBetterStore', // Usually your GitHub org/user name.
   projectName: 'TheBetterStore', // Usually your repo name.
 
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
+
+  // Even if you don't use internationalization, you can use this field to set
+  // useful metadata like html lang. For example, if your site is Chinese, you
+  // may want to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+
   presets: [
     [
-      '@docusaurus/preset-classic',
+      'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: './sidebars.js',
           // Please change this to your repo.
-          editUrl: 'https://github.com/TheBetterStore/tbs-docs/edit/master/',
+          // Remove this to remove the "edit this page" links.
+          // editUrl:
+          //  'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
+          feedOptions: {
+            type: ['rss', 'atom'],
+            xslt: true,
+          },
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/TheBetterStore/tbs-docs/edit/master/blog/',
+          // Remove this to remove the "edit this page" links.
+          // editUrl:
+          //  'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // Useful options to enforce blogging best practices
+          onInlineTags: 'warn',
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: './src/css/custom.css',
         },
       }),
     ],
@@ -42,6 +73,8 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Replace with your project's social card
+      image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'The Better Store',
         logo: {
@@ -76,6 +109,23 @@ const config = {
             ],
           },
           {
+            title: 'Community',
+            items: [
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              },
+              {
+                label: 'Discord',
+                href: 'https://discordapp.com/invite/docusaurus',
+              },
+              {
+                label: 'X',
+                href: 'https://x.com/docusaurus',
+              },
+            ],
+          },
+          {
             title: 'More',
             items: [
               {
@@ -92,10 +142,10 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Bryce Cummock, Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
       },
     }),
 };
 
-module.exports = config;
+export default config;
