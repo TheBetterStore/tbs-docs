@@ -32,7 +32,7 @@ const sidebars = {
       items: [
         'cloud-native-design+implementation/Overview',
         'cloud-native-design+implementation/MSA Architecture Patterns',
-        'cloud-native-design+implementation/Target View'
+        'cloud-native-design+implementation/Implementation'
       ]
     },
     {

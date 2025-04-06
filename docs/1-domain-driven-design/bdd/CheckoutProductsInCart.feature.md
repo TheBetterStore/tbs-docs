@@ -53,9 +53,10 @@ Feature: Purchase Products in Cart
     When I submit valid Card details
     And Payment is approved
     Then My order details with cart details will be stored in the Order Repository
+    And The order details will be eventually persisted to the reporting database
     And I an electronic Receipt will be emailed to me
     And A shipping order is sent for Fulfillment
-    And I will be directed to a Purchase Confirmation screen
+    And I will be directed back to the store's home page, with a notice confirming the order number
         
 	@Payment Rejected
   Scenario: Payment Rejected
