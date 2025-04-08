@@ -9,9 +9,54 @@ provides a great overview and illustration of these at his website https://micro
 
 ![Micoservice Patterns in-scope for The Better Store ](msa-patterns.svg)
 
-With definitions being:
+A description of those used and why by The Better Store are described below.
 
-### Application Patterns
+## Application Patterns
+### Decomposition
+**Decompose By Subdomain** describes how Domain Driven Design may be used to decompose a business's domain into decoupled subdomains or *Bounded Contexts*, each of which may be considered as a candidate for a microservice implementation. This topic has been the focus of our previous articles in this series.  
+
+**Self Contained Service** describes how each service should own and define all of their application and infrastructure dependencies such as data storage, security resources etc; such that they can be deployed quickly and independently across environments. This includes for example having their own security roles, firewall definitions, databases (see below), SSL certificates and domain records defined; external/shared dependencies are kept to a minimum; such as the VPC in which they reside.
+In the next DecSecOps section, *Infrastructure as Code (IaC)* using AWS Cloudformation will be described, for the creation of fully-encapsulated Cloudformation stacks which may be used to deploy instances of independent microservices, including resources that they require.
+
+The example below illustrates the Order Cloudforamtion stack, which defines all of its required resources, and shared infrastructure stacks that it depends on.
+
+![Self-contained order stack example ](order-stack.svg)
+
+**Onion Architecture**, while not being strictly specific to microservices, is a highly-recommended pattern used by The Better Store for implementing services having a layered architecture oriented towards defining domain services at their core, with decoupled outer layers using SOLID paradigms to encapsulate application services including persistence, authentication, logging, and other external dependencies. Its key advantages include optimising code structure for maintainability, extensibility and testing. The Onion Architecture is described in further detail in the previous DDD Strategic Patterns section.
+
+### Data Patterns
+
+#### Database Architecture
+
+**Database per Service** is an often contentious pattern recommended for microservices; traditional relational databases can often become large in size to accommodate a data model shared by multiple application services, where relational constraints and supporting of atomic transactions across tables that may be shared by multiple services are enforced to preserve data integrity. Imposing the database/service pattern implies the following:
+1. The database is split into objects specific for each microservice, which means breaking relational constraints and ACID transaction support otherwise provided.
+2. The application's architecture needs to be refactored to cater for the loss of these constraints to preserve data integrity. Patterns that may assist include 'Aggregate', 'Saga', and 'Idempotent Consumer', to be introduced below.
+
+Advantages of the Database per Service again is *change agility*; any changes that may be required to a database should generally only impact its owning microservice. This greatly-reduces the risk of issues and the amount of regression testing
+that may otherwise be required when making changes. Furthermore, each service is free to use a database technology that is most suitable for their needs, aka *(polyglot persistence)*, for example:
+
+* The Order microservice is expected to use AWS DynamoDB, a serverless NoSQL database which scales well for high-demand, and is capable of replicating data across regions for potential future global scalability of the application.
+* The Reports microservice is expected to use AWS Aurora Serverless, to receive orders in batches, which supports complex relational queries using SQL to provide overnight reports. Its serverless nature is expected to provide cost optimisation for its low intended traffic, while any cold-starts in activity will not impact users.
+
+#### Data Consistency
+
+The **Saga** pattern addresses the problem of how to manage business transactions that span multiple databases, for example when implementing the Database per Service pattern described above and database *2-phase commits* and rollbacks are not possible. It describes
+a process whereby such transactions are implemented as a sequence of partial transactions against each of the participant databases. If any single step of the trasnaction fails, then previous changes are to be rolled-back by running copensating transactions in the reverse order.
+
+An example of a choreography-based saga is given below (where system behaviour is asynchronously event-driven):
+
+![Saga Choreography](saga-choreography.svg)
+
+
+#### Querying
+
+**CQRS** 
+
+
+
+
+## Summary
+#### Application Patterns
 
 | **Pattern**            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Notes                                                                                                                                                                                    |
 |:-----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
