@@ -15,8 +15,9 @@ Coming soon... how the DDD implementation may be realized within an AWS Serverle
 
 ![AWS-ViewOrderReports](AWS-ViewOrderReports.svg)
 
-### 3. Illustrating an envisaged final target architecture
+### 3. Illustrating the overall architecture discussed
 
-![Implementation View](tbs-implementation.svg)
+
+![AWS Order Confirmed Processing](AWSConfirmOrderFlow.svg)
 
 
