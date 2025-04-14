@@ -29,25 +29,19 @@ The focus here will be defining an implementation which has the following featur
 
 This logical flow is represented by the following:
 
-![Confirm and Fulfill Order ](HLDViewOrderReports.svg)
+![Confirm and Fulfill Order ](HLDConfirmOrder.svg)
+*Figure 1: Logical flow representing completion of the Order Purchased scenario.*
 
 So now that we have identified the resources and required interactions between them for implementing flows, we need to
 determine exactly how to implement these in a way that provides optimal scalability, resilience and performance while
-considering cost, while using AWS as the platform of choice. Some questions that we could start ask ourselves while looking at the
-above high-level implementation designs:
-1. What is the best website hosting technology to use, given the following requirements:
-  1. Frontend being developed using modern-frameworks with a Single-Page-Application (SPA) static implementation, such as Angular.
-  2. Best use of AWS services to provide a global-scale performant, cost-effective and resilient architecture
-  3. Effective integration of user authentication and authorization at both the frontend and backend services.
-2. What is the best backend hosting technology to use for compute and data services that quickly scale on-demand, can be easily scaled
+considering cost with AWS as the platform of choice. Some questions that we can start asking ourselves while looking at the
+above high-level implementation designs are:
+1. What is the best backend hosting technology to use for compute and data services that quickly scale on-demand, can be easily scaled
    across regions for a global implementation, are resilient, provide cost optimization for both development and production environments in terms of compute and operational/maintenance costs.
-3. What are the best methods for enabling communications between services and data stores which provide scalability, resilience and
+2. What are the best methods for enabling communications between services and data stores which provide scalability, resilience and
    cost optimization that accommodate both development and production environments?
-4. What are the best methods for managing transactions and errors?
+3. What are the best methods for managing transactions and errors?
 
-For answering these questions, we will consider the following:
-1. Microservice Architecture patterns. A great resource for referencing popular Microservice Architecture patterns has been published by Chris Richardson at,
-2. Candidate AWS ServicesError Handling
-3. Error Handling
+A number of Microservice Patterns have been published which are aimed at address these and other questions, and we will look at these next.
 
 Next: [Microservice Architecture Patterns:](msa-architecture-patterns.md)
