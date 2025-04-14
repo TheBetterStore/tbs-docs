@@ -42,6 +42,6 @@ above high-level implementation designs are:
    cost optimization that accommodate both development and production environments?
 3. What are the best methods for managing transactions and errors?
 
-A number of Microservice Patterns have been published which are aimed at address these and other questions, and we will look at these next.
+Several Microservice Patterns have been published to address these and other issues. We will now examine these patterns in detail.
 
 Next: [Microservice Architecture Patterns:](msa-architecture-patterns.md)
