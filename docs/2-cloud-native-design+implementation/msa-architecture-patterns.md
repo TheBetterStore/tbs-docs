@@ -77,8 +77,8 @@ that may otherwise be required when making changes. Furthermore, each service is
 
 ### Data Consistency
 
-**F. Saga:** is a pattern that addresses the problem of how to manage business transactions that span multiple databases, for example when implementing the Database per Service pattern described above and database _2-phase commits_ and rollbacks are not possible. It describes
-a process whereby such transactions are implemented as a sequence of partial transactions against each of the participant databases. If any single step of the trasnaction fails, then previous changes are to be rolled-back by running copensating transactions in the reverse order.
+**F. Saga:** is a pattern that addresses the problem of how to manage business transactions that span multiple services and/or databases, for example when implementing the Database per Service pattern described above, and including a distributed transaction e.g. via a 2-phase-commit is either too complex or not possible for error handling. It describes
+a process whereby such transactions are implemented as a sequence of partial transactions against each of the participant databases. If any single step of the transaction fails, then previous changes are to be rolled-back by running copensating transactions in the reverse order.
 
 An example of a choreography-based saga is given below (where system behaviour is asynchronously event-driven):
 
