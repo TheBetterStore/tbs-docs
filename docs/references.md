@@ -20,4 +20,4 @@ sidebar_label: References
 14. https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/#:~:text=The%20Onion%20Architecture%20picks%20up,direction%20is%20towards%20the%20centre.
 15. https://microservices.io
 16. https://aws.amazon.com/architecture/well-architected/?wa-lens-whitepapers.sort-by=item.additionalFields.sortDate&wa-lens-whitepapers.sort-order=desc
-17. 
+17. "Complex Event Filtering with AWS EventBridge Pipes, Rules and No Custom Code.", https://dev.to/aws-builders/complex-event-filtering-with-aws-eventbridge-pipes-rules-and-no-custom-code-2b11

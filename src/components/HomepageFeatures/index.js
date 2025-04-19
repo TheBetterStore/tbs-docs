@@ -1,11 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './HomepageFeatures.module.css';
+import styles from './styles.module.css';
 
 const FeatureList = [
   {
     title: 'Using Domain Driven Design',
-    Svg: require('../../static/img/ddd.svg').default,
+    Svg: require('../../../static/img/ddd.svg').default,
     description: (
       <>
         Domain Driven Design provides an ideal methodology for the high-level design of a Microservice-based system architectures (MSA), and for sharing a common understanding
@@ -15,7 +15,7 @@ const FeatureList = [
   },
   {
     title: 'Implementing with Cloud-Native Architecture',
-    Svg: require('../../static/img/cncf.svg').default,
+    Svg: require('../../../static/img/cncf.svg').default,
     description: (
       <>
         Cloud-Native Architectures are oriented towards implementation of cohesive and loosely-coupled microservices, that may be quickly-scaled to meet user demands,
@@ -25,7 +25,7 @@ const FeatureList = [
   },
   {
     title: 'Powering with AWS DevOps Tools and Cloud Platform',
-    Svg: require('../../static/img/AWS.svg').default,
+    Svg: require('../../../static/img/AWS.svg').default,
     description: (
       <>
         AWS has been selected as the Cloud provider for hosting The Better Store, due to its breadth of service offerings and existing skills within our development team.
